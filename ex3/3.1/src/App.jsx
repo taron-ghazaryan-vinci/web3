@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect  } from 'react';
 
 // eslint-disable-next-line react/prop-types
 const StatisticLine = ({ name, stat }) => {
@@ -15,11 +15,25 @@ const Buttons = ({ state, name }) => {
   return <button onClick={state}>{name}</button>;
 };
 
+
+const Loading = () => {
+    return <p>Chargement...</p>
+}
+
+
 const App = () => {
   // save clicks of each button to its own state
   const [good, setGood] = useState(0);
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
+  const[loading, setLoading] = useState(true);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000); // Assuming you wanted 3 seconds instead of 3 milliseconds
+
+    return () => clearTimeout(timer); // Clean up the timeout on unmount
+  }, []);
 
   const totalFeedbacks = good + neutral + bad;
   const positive = totalFeedbacks === 0 ? 0 : (good / totalFeedbacks) * 100;
@@ -47,8 +61,7 @@ const App = () => {
       <Buttons state={setBadValue} name="bad" />
       <br />
       <h1>Statistics</h1>
-
-      {totalFeedbacks === 0 ? (
+      {loading ? (<Loading/>) : (totalFeedbacks === 0 ? (
         <p>No feedback given</p>
       ) : (
         <table>
@@ -67,7 +80,7 @@ const App = () => {
             <StatisticLine name="positive" stat={positive.toFixed(2) + ' %'} />
           </tbody>
         </table>
-      )}
+      ))}
     </div>
   );
 };
