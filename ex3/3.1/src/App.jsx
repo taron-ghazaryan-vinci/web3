@@ -52,7 +52,7 @@ const App = () => {
   const setBadValue = () => {
     setBad(bad + 1);
   };
-
+  
   return (
     <div>
       <h1>Give feedback</h1>
@@ -77,7 +77,7 @@ const App = () => {
             <StatisticLine name="bad" stat={bad} />
             <StatisticLine name="all" stat={totalFeedbacks} />
             <StatisticLine name="average" stat={average.toFixed(2)} />
-            <StatisticLine name="positive" stat={positive.toFixed(2) + ' %'} />
+            <StatisticLine name="positive" stat={positive.toFixed(2) + ' %'}/>
           </tbody>
         </table>
       ))}
