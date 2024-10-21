@@ -1,5 +1,5 @@
 
-import './App.css'
+/*import './App.css'
 import { useContext } from 'react'
 import { Context } from './contexts/countersContext'
 
@@ -35,3 +35,61 @@ function App() {
 }
 
 export default App
+*/
+
+import { useState, useContext } from "react";
+import { Context } from './contexts/countersContext'
+
+const OpinionList = () => {
+  const { opinions, voteOpinion } = useContext(Context);
+
+  return (
+    <div>
+      <h2>Opinions</h2>
+      {opinions.map((opinion) => (
+        <div key={opinion.id}>
+          <p>{opinion.text}, Votes : {opinion.votes}</p>
+          <button onClick={() => voteOpinion(opinion.id)}>Vote</button>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+
+const AddOpinion = () => {
+  const [newOpinion, setNewOpinion] = useState("");
+  const { addOpinion } = useContext(Context);
+
+  const handleAddOpinion = () => {
+    if (newOpinion.trim()) {
+      addOpinion(newOpinion);
+      setNewOpinion("");
+    }
+  };
+
+  return (
+    <div>
+      <input
+        type="text"
+        value={newOpinion}
+        onChange={(e) => setNewOpinion(e.target.value)}
+        placeholder="Add your opinion"
+      />
+      <button onClick={handleAddOpinion}>Add Opinion</button>
+    </div>
+  );
+}
+
+
+function App() {
+  return (
+      <div>
+        <h1>Give your Opinion</h1>
+        <AddOpinion />
+        <OpinionList />
+      </div>
+  );
+}
+
+export default App;

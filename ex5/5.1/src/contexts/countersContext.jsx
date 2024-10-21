@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+/*
 import React from "react";
 
 const Context = React.createContext(null)
@@ -45,3 +46,44 @@ export {
     ProviderWrapper,
     Context
 }
+/
+*/
+import React, { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+
+const Context = React.createContext();
+
+const ProviderWrapper = ({ children }) => {
+  const [opinions, setOpinions] = useState([]);
+
+  // Ajouter une opinion
+  const addOpinion = (text) => {
+    const newOpinion = {
+      id: uuidv4(),
+      text,
+      votes: 1,
+    };
+    setOpinions((prevOpinions) => [...prevOpinions, newOpinion].sort((a, b) => b.votes - a.votes));
+  };
+
+  // Voter pour une opinion
+  const voteOpinion = (id) => {
+    setOpinions((prevOpinions) =>
+      prevOpinions
+        .map((opinion) =>
+          opinion.id === id ? { ...opinion, votes: opinion.votes + 1 } : opinion
+        )
+        .sort((a, b) => b.votes - a.votes)
+    );
+  };
+
+  const exposedValues = {
+    opinions,
+    addOpinion,
+    voteOpinion,
+  };
+
+  return <Context.Provider value={exposedValues}>{children}</Context.Provider>;
+};
+
+export { ProviderWrapper, Context };
