@@ -49,7 +49,6 @@ export {
 /
 */
 import React, { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 
 const Context = React.createContext();
 
@@ -59,7 +58,7 @@ const ProviderWrapper = ({ children }) => {
   // Ajouter une opinion
   const addOpinion = (text) => {
     const newOpinion = {
-      id: uuidv4(),
+      id: opinions.length + 1,
       text,
       votes: 1,
     };
